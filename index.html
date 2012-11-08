@@ -1,10 +1,10 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="components">
 <head>
 	<link href="lib/rainbow/themes/all-hallows-eve.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"></link>
 
-	<script type="text/javascript" src="lib/rainbow/js/rainbow.js"></script>
+	<script type="text/javascript" src="lib/rainbow/js/rainbow.min.js"></script>
 	<script src="lib/rainbow/js/language/generic.js"></script>
 	<script type="text/javascript" src="lib/rainbow/js/language/javascript.js"></script>
 	
@@ -14,106 +14,18 @@
 	<script type="text/javascript" src="lib/dox.js" ></script>
 
 	<script type="text/javascript" src="lib/underscore.js"></script>
-	<script id="dox-angular" data-src="keys.js" type="text/javascript" src="dox-angular.js"></script>
+	<script type="text/javascript" src="dox-angular.js"></script>
 
 	
 </head>
-<body class="row-fluid">
-
-	<nav class="affix nav-list span2" ng-controller="doxControl">
-		<ul class="unstyled">
-			<li ng-repeat="thing in obj.jsDoc.functions">
-				<a href="#{{thing.ctx.name}}">{{thing.ctx.name}}</a>
-				<ul>
-					<li ng-repeat="method in thing.prototypeMethods">
-						<a href="#{{method.ctx.name}}">{{method.ctx.name}}</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</nav>
-	<div class="span10 pull-right" ng-controller="doxControl">
-		<input type="search" class="input-small pull-right" ng-model="search" placeholder="Search..."></input>
-		<article>
-			<section ng-repeat="thing in obj.jsDoc.functions | filter:search" id="{{thing.ctx.name}}" class="function">
-				<header class="name"><span><h3 style="display:inline">{{thing.ctx.name}}</h3> : <code>{{thing.ctx.string}}</code></span></header>
-				<section class="description" ng-bind-html-unsafe="thing.description.full"></section>
-				<ul class="unstyled" ng-show='false'>
-					<li ng-repeat="tag in thing.tags | filter:notReserved">
-						<p>{{tag.type}}
-							<span ng-repeat="type in tag.types">: {{type}}, </span>
-						</p>	
-						<p>{{tag.description}}</p>
-					</li>
-				</ul>
-				<section ng-show='hasParams(thing)'>
-					<header>Params:</header>
-					<ul class="unstyled">
-						<li ng-repeat="tag in thing.tags | filter:{type:'param'}">
-							<p>{{tag.name}}
-								<span ng-repeat="type in tag.types">: {{type}}, </span>
-								<span>{{tag.description}}</span>
-							</p>	
-
-						</li>
-					</ul>
-				</section>
-				<section ng-show='doesReturn(thing)'>
-					<ul class="unstyled">
-						<li ng-repeat="tag in thing.tags | filter:{type:'return'}">
-							<p>{{tag.name}}
-								<span ng-repeat="type in tag.types">Returns: {{type}}, </span>
-								<span>{{tag.description}}</span>
-							</p>	
-							
-						</li>
-					</ul>
-				</section>
-				<section class="code">
-					<pre><code data-language="javascript" ng-bind-html-unsafe="thing.code"></code></pre>
-				</section>
-				<section ng-repeat="method in thing.prototypeMethods | filter:search" id="{{method.ctx.name}}" class="prototype method" >
-					<header class="name"><span><h3 style="display:inline">{{method.ctx.name}}</h3> : <code>{{method.ctx.string}}</code></span></header>
-					<section class="description" ng-bind-html-unsafe="method.description.full"></section>
-					<ul class="unstyled" ng-show='false'>
-						<li ng-repeat="tag in method.tags | filter:notReserved">
-							<p>{{tag.type}}
-								<span ng-repeat="type in tag.types">: {{type}}, </span>
-								<span>{{tag.description}}</span>
-							</p>	
-						</li>
-					</ul>
-					<section ng-show='hasParams(method)'>
-						<header>Params:</header>
-						<ul class="unstyled">
-							<li ng-repeat="tag in method.tags | filter:{type:'param'}">
-								<p>{{tag.name}}
-									<span ng-repeat="type in tag.types">: {{type}}, </span>
-									<span>{{tag.description}}</span>
-								</p>	
-								
-							</li>
-						</ul>
-					</section>
-					<section ng-show='doesReturn(thing)'>
-						<ul class="unstyled">
-							<li ng-repeat="tag in thing.tags | filter:{type:'return'}">
-								<p>{{tag.name}}
-									<span ng-repeat="type in tag.types">Returns: {{type}}, </span>
-									<span>{{tag.description}}</span>
-								</p>	
-							</li>
-						</ul>
-					</section>
-					<section class="code">
-						<pre><code data-language="javascript" ng-bind-html-unsafe="method.code"></code></pre>
-					</section>
-
-
-				</section>
-			</section>
-		</article>
-	</div>
-	
+<body>
+	<tabs>
+		<pane title="dox">
+			<dox src-path="lib/dox.js"></dox>
+		</pane>
+		<pane title="keys">
+			<dox src-path="keys.js"></dox>
+		</pane>
+	</tabs>
 </body>
 </html>
