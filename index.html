@@ -16,16 +16,16 @@
 	<script type="text/javascript" src="lib/underscore.js"></script>
 	<script type="text/javascript" src="dox-angular.js"></script>
 
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="json2.js"></script>
+	<script src="components/underscore/underscore.js"></script>
+	<script src="components/backbone/backbone.js"></script>
 	
 </head>
 <body>
-	<tabs>
-		<pane title="dox">
-			<dox src-path="lib/dox.js"></dox>
-		</pane>
-		<pane title="keys">
-			<dox src-path="keys.js"></dox>
-		</pane>
-	</tabs>
+	<input id="app" class="user-name" type="text" placeholder="Enter a github user name"></input><select id='repos'><option>Choose a repo.</option></select><select id='files'><option>Choose a file.</option></select>
+	<dox src-path="lib/dox.js"></dox>
+	<script src="app.js"></script>
 </body>
 </html>
