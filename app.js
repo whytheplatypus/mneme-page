@@ -147,8 +147,7 @@ var App = Backbone.View.extend({
 	template: _.template(''),
 
 	events: {
-		"keypress": "render",
-                "blur": "update"
+		"keypress": "render"
 	},
 
 	initialize: function(){
@@ -157,12 +156,9 @@ var App = Backbone.View.extend({
 	render: function(e){
 		if (e.keyCode != 13) return;
       	if (!this.el.value) return;
-         This.update()
-	},
-        update:function(){
-           user.set('name', this.el.value);
-		user.fetch();
-         }
+             user.set('name', this.el.value);
+             user.fetch();
+	}
 });
 
 var app = new App;
