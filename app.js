@@ -99,7 +99,13 @@ var RepoView = Backbone.View.extend({
 		console.log(this.el.options[this.el.selectedIndex].value);
 		var file = this.model.files.getByCid(this.el.options[this.el.selectedIndex].value);
 		console.log(file);
-		window.updateCode(file.get('git_url'));
+		//window.updateCode(file.get('git_url'));
+		var element = angular.element('<dox src-path='+file.get('git_url')+'></dox>');
+		console.log(element)
+		var docs = document.getElementById('docs');
+		docs.innerHTML = null;
+		$(docs).append(element);
+		angular.bootstrap( element, ['components']);
 		//file.fetch();
 	}
 });

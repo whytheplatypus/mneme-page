@@ -311,7 +311,7 @@ function doxControl($scope, $element, $attrs){
     xhr.send();
   };
 
-  window.updateCode = updateCode;
+  //window.updateCode = updateCode;
 
   updateCode($attrs.srcPath);
 
