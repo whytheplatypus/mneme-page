@@ -1,5 +1,4 @@
 
-
 var gitAPI = 'https://api.github.com/';
 
 var grab = function(addr, callback, self){
@@ -149,6 +148,7 @@ var App = Backbone.View.extend({
 
 	events: {
 		"keypress": "render",
+                "blur": "update"
 	},
 
 	initialize: function(){
@@ -157,9 +157,12 @@ var App = Backbone.View.extend({
 	render: function(e){
 		if (e.keyCode != 13) return;
       	if (!this.el.value) return;
-      	user.set('name', this.el.value);
-		user.fetch();
+         This.update()
 	},
+        update:function(){
+           user.set('name', this.el.value);
+		user.fetch();
+         }
 });
 
 var app = new App;
