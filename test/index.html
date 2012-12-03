@@ -1,0 +1,40 @@
+<!doctype html>
+<html ng-app="components">
+<head>
+	<link href="lib/rainbow/themes/all-hallows-eve.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"></link>
+
+	<script type="text/javascript" src="lib/rainbow/js/rainbow.min.js"></script>
+	<script src="lib/rainbow/js/language/generic.js"></script>
+	<script type="text/javascript" src="lib/rainbow/js/language/javascript.js"></script>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+
+	<script type="text/javascript" src="lib/dox/components/marked/lib/marked.js"></script>
+	<script type="text/javascript" src="lib/dox/dox.js" ></script>
+
+	<script type="text/javascript" src="components/underscore/underscore.js"></script>
+	<script type="text/javascript" src="dox-angular.js"></script>
+
+
+	<!--<<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="json2.js"></script>
+	<script src="components/underscore/underscore.js"></script>
+	<script src="components/backbone/backbone.js"></script>-->
+	
+</head>
+<body>
+	<!--<input id="app" class="user-name" type="text" placeholder="Enter a github user name"></input><select id='repos'><option>Choose a repo.</option></select><select id='files'><option>Choose a file.</option></select>-->
+	<div id='docs'>
+            <tabs>
+                <pane title="keys">
+                    <dox src-path="test/keys.js"></dox>
+                </pane>
+                <pane title="keys">
+                    <dox src-path="test/keys.js"></dox>
+                </pane>
+            </tabs>
+	</div>
+	<!--<script src="app.js"></script>-->
+</body>
+</html>

@@ -199,6 +199,9 @@ angular.module('components', []).
       scope: {},
       controller: function($scope, $element) {
         var panes = $scope.panes = [];
+
+        window.files = ['lib/dox.js'],
+        $scope.files = window.files;
  
         $scope.select = function(pane) {
           angular.forEach(panes, function(pane) {
@@ -213,7 +216,7 @@ angular.module('components', []).
         }
       },
       template:
-        '<div class="tabbable">' +
+        '<div id="tabs" class="tabbable">' +
           '<ul class="nav nav-tabs">' +
             '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">'+
               '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
@@ -242,65 +245,75 @@ angular.module('components', []).
 
 function doxControl($scope, $element, $attrs){
 	//should be able to use $scope.path but whatever
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', $attrs.srcPath, true);
-	$scope.obj = {}
-	xhr.onload = function(e) {
-		if (this.status == 200) {
-		  var result = dox.parseComments(this.response);
-		  console.log(result);
-		  var testResult = _.groupBy(result, function(thing){
-		  	if(thing.ctx !== undefined) {
-		  		return thing.ctx.type;
-		  	} else {
-		  		return 'code';
-		  	}
-		  });
+  $scope.obj = {}
+  var updateCode = function(srcPath){
+  	var xhr = new XMLHttpRequest();
+  	xhr.open('GET', srcPath, true);
+    xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
+  	
+  	xhr.onload = function(e) {
+  		if (this.status == 200) {
+  		  var result = dox.parseComments(this.response);
+  		  console.log(result);
+  		  var testResult = _.groupBy(result, function(thing){
+  		  	if(thing.ctx !== undefined) {
+  		  		return thing.ctx.type;
+  		  	} else {
+  		  		return 'code';
+  		  	}
+  		  });
 
-		  console.log(testResult);
+  		  console.log(testResult);
 
-		  var functions = {};
-		  _.each(testResult.function, function(fn){
-		  	functions[fn.ctx.name] = fn;
-		  });
+  		  var functions = {};
+  		  _.each(testResult.function, function(fn){
+  		  	functions[fn.ctx.name] = fn;
+  		  });
 
-		  _.each(functions, function(fn){
-		  	fn.prototypeMethods = _.filter(testResult.method, function(met){return met.ctx.cons == fn.ctx.name});
-		  	fn.prototypeProperty = _.filter(testResult.property, function(met){return met.ctx.cons == fn.ctx.name});
-		  	fn.methods = _.filter(testResult.method, function(met){return met.ctx.receiver == fn.ctx.name});
-		  	fn.properties = _.filter(testResult.property, function(met){return met.ctx.receiver == fn.ctx.name});
-		  });
+  		  _.each(functions, function(fn){
+  		  	fn.prototypeMethods = _.filter(testResult.method, function(met){return met.ctx.cons == fn.ctx.name});
+  		  	fn.prototypeProperty = _.filter(testResult.property, function(met){return met.ctx.cons == fn.ctx.name});
+  		  	fn.methods = _.filter(testResult.method, function(met){return met.ctx.receiver == fn.ctx.name});
+  		  	fn.properties = _.filter(testResult.property, function(met){return met.ctx.receiver == fn.ctx.name});
+  		  });
 
-		  testResult.functions = functions;
+  		  testResult.functions = functions;
 
-		  var declarations = {};
-		  _.each(testResult.declaration, function(dec){
-		  	declarations[dec.ctx.name] = dec;
-		  });
+  		  var declarations = {};
+  		  _.each(testResult.declaration, function(dec){
+  		  	declarations[dec.ctx.name] = dec;
+  		  });
 
-		  _.each(declarations, function(dec){
-		  	dec.prototypeMethods = _.filter(testResult.method, function(met){return met.ctx.cons == dec.ctx.name});
-		  	dec.prototypeProperty = _.filter(testResult.property, function(met){return met.ctx.cons == dec.ctx.name});
-		  	dec.methods = _.filter(testResult.method, function(met){return met.ctx.receiver == dec.ctx.name});
-		  	dec.properties = _.filter(testResult.property, function(met){return met.ctx.receiver == dec.ctx.name});
-		  });
+  		  _.each(declarations, function(dec){
+  		  	dec.prototypeMethods = _.filter(testResult.method, function(met){return met.ctx.cons == dec.ctx.name});
+  		  	dec.prototypeProperty = _.filter(testResult.property, function(met){return met.ctx.cons == dec.ctx.name});
+  		  	dec.methods = _.filter(testResult.method, function(met){return met.ctx.receiver == dec.ctx.name});
+  		  	dec.properties = _.filter(testResult.property, function(met){return met.ctx.receiver == dec.ctx.name});
+  		  });
 
-		  testResult.declarations = declarations;
+  		  testResult.declarations = declarations;
 
-		  var docs = {raw: result, jsDoc: testResult};
+  		  var docs = {raw: result, jsDoc: testResult};
 
-		  console.log(docs.jsDoc.functions);
-		  //console.log(JSON.stringify(result, null, 2));
-		  $scope.$apply(function(){
-	          $scope.obj = docs;
+  		  console.log(docs.jsDoc.functions);
+  		  //console.log(JSON.stringify(result, null, 2));
+  		  $scope.$apply(function(){
+  	          $scope.obj = docs;
 
-	          setTimeout(function(){Rainbow.color();}, 1000);
-	      });
+  	          setTimeout(function(){Rainbow.color();}, 1000);
+  	      });
 
 
-		  //console.log($scope.obj);
-		}
-	};
+  		  //console.log($scope.obj);
+  		}
+  	};
+
+    xhr.send();
+  };
+
+  //window.updateCode = updateCode;
+
+  updateCode($attrs.srcPath);
 
     $scope.notReserved = function(item){
         return item.type != 'param' && item.type != 'return';
@@ -324,5 +337,5 @@ function doxControl($scope, $element, $attrs){
     	return false;
     }
 
-	xhr.send();
+	
 }
