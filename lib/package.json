@@ -1,7 +1,0 @@
-{
-  "volo": {
-    "dependencies": {
-      "rainbow": "github:ccampbell/rainbow/1.1.8",
-    }
-  }
-}

@@ -1,20 +1,148 @@
 <!doctype html>
 <html ng-app="components">
 <head>
-	<link href="lib/rainbow/themes/all-hallows-eve.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"></link>
+	<link rel="stylesheet" type="text/css" href="test/bootstrap/css/bootstrap.css"></link>
 
-	<script type="text/javascript" src="lib/rainbow/js/rainbow.min.js"></script>
-	<script src="lib/rainbow/js/language/generic.js"></script>
-	<script type="text/javascript" src="lib/rainbow/js/language/javascript.js"></script>
-	
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+	<link rel="stylesheet" href="test/styles/rainbow.css">
+	<script src="test/highlight.pack.js"></script>
 
-	<script type="text/javascript" src="components/marked/lib/marked.js"></script>
-	<script type="text/javascript" src="components/dox/dox.js" ></script>
+	<script type="text/javascript" src="test/marked.js"></script>
+	<script type="text/javascript" src="test/dox.js" ></script>
 
 	<script type="text/javascript" src="components/underscore/underscore.js"></script>
-	<script type="text/javascript" src="dox-angular.js"></script>
+	<script type="text/javascript" src="test/x-tag.js"></script>
+	<script type="text/javascript" src="test/handlebars.js"></script>
+	<script type="text/javascript" src="x-dox.js"></script>
+
+	<script id="dox-template" type="text/x-handlebars-template">
+		<div class="documenation" class="row-fluid">
+        	<nav class="affix nav-list span2">
+				<ul class="unstyled">
+					{{#each function}}
+						<li>
+							<a href="#{{ctx.name}}">{{ctx.name}}</a>
+							<ul>
+								{{#each prototypeMethods}}
+									<li>
+										<a href="#{{ctx.name}}">{{ctx.name}}</a>
+									</li>
+								{{/each}}
+								{{#each methods}}
+									<li>
+										<a href="#{{ctx.name}}">{{ctx.name}}</a>
+									</li>
+								{{/each}}
+								{{#each prototypeProperties}}
+									<li>
+										<a href="#{{ctx.name}}">{{ctx.name}}</a>
+									</li>
+								{{/each}}
+								{{#each properties}}
+									<li>
+										<a href="#{{ctx.name}}">{{ctx.name}}</a>
+									</li>
+								{{/each}}
+							</ul>
+						</li>
+					{{/each}}
+				</ul>
+			</nav>
+			<article class="span10 pull-right">
+				{{#each declaration}}
+			    	<section id="{{ctx.name}}" class="declaration">
+						<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+						<section class="description">{{description.full}}</section>
+						<section class="code">
+							<pre><code class="javascript">{{code}}</code></pre>
+						</section>
+						{{#each prototypeMethods}}
+							<section id="{{ctx.name}}" class="prototype method" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{description.full}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						{{#each prototypeProperties}}
+							<section id="{{ctx.name}}" class="prototype property" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{description.full}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{property.code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						{{#each methods}}
+							<section id="{{ctx.name}}" class="prototype method" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{description.full}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						{{#each properties}}
+							<section id="{{ctx.name}}" class="prototype property" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{description.full}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{property.code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						
+					</section>
+				{{/each}}
+				{{#each function}}
+			    	<section id="{{ctx.name}}" class="function">
+						<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+						<section class="description">{{{description.full}}}</section>
+						<section class="code">
+							<pre><code class="javascript">{{code}}</code></pre>
+						</section>
+						{{#each prototypeMethods}}
+							<section id="{{ctx.name}}" class="prototype method" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{{description.full}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						{{#each prototypeProperties}}
+							<section id="{{ctx.name}}" class="prototype property" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{{description.full}}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						{{#each methods}}
+							<section id="{{ctx.name}}" class="prototype method" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{{description.full}}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						{{#each properties}}
+							<section id="{{ctx.name}}" class="prototype property" >
+								<header class="name"><span><h3 style="display:inline">{{ctx.name}}</h3> : <pre><code class="javascript">{{ctx.string}}</code></pre></span></header>
+								<section class="description">{{{description.full}}}</section>
+								<section class="code">
+									<pre><code class="javascript">{{code}}</code></pre>
+								</section>
+							</section>
+						{{/each}}
+						
+					</section>
+				{{/each}}
+			</article>
+        </div>
+	</script>
 
 
 	<!--<<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -26,14 +154,7 @@
 <body>
 	<!--<input id="app" class="user-name" type="text" placeholder="Enter a github user name"></input><select id='repos'><option>Choose a repo.</option></select><select id='files'><option>Choose a file.</option></select>-->
 	<div id='docs'>
-            <tabs>
-                <pane title="keys">
-                    <dox src-path="test/keys.js"></dox>
-                </pane>
-                <pane title="keys">
-                    <dox src-path="test/keys.js"></dox>
-                </pane>
-            </tabs>
+        <x-dox src="test/keys.js" template-src="dox-template"></x-dox>
 	</div>
 	<!--<script src="app.js"></script>-->
 </body>
