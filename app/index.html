@@ -1,0 +1,81 @@
+<!doctype html>
+<html ng-app="components">
+<head>
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.css"></link>
+
+	<link rel="stylesheet" href="vendor/highlight_styles/rainbow.css">
+	<script src="vendor/highlight.pack.js"></script>
+
+	<script type="text/javascript" src="vendor/marked.js"></script>
+	<script type="text/javascript" src="jsdoc.js"></script>
+	<script type="text/javascript" src="vendor/esprima.js"></script>
+	<script type="text/javascript" src="mneme.js" ></script>
+
+	<script type="text/javascript" src="vendor/underscore.js"></script>
+	<script type="text/javascript" src="vendor/x-tag.js"></script>
+	<script type="text/javascript" src="vendor/handlebars.js"></script>
+	<script type="text/javascript" src="x-mneme.js"></script>
+	<script type="text/javascript" src="vendor/json2.js"></script>
+	<script type="text/javascript" src="vendor/zepto.min.js"></script>
+	<script type="text/javascript" src="vendor/backbone.js"></script>
+
+
+	<script id="mneme-template" type="text/x-handlebars-template">
+		<div class="documenation" class="row-fluid">
+        	<nav class="affix nav-list span2">
+				<ul class="unstyled">
+					
+				</ul>
+			</nav>
+
+			{{#each info}}
+			<article class="span10 pull-right">
+					{{#each block}}
+						<div>{{this}}</div>
+					{{/each}}
+					<div>{{text}}</div>
+					{{#each tags}}
+						<div id="line-#{{line}}"><strong>{{name}}</strong><span>{{content}}</span></div>
+					{{/each}}
+				
+				</p>
+			</article>
+			{{/each}}
+    	</div>
+	</script>
+	
+
+
+	<!--<<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="json2.js"></script>
+	<script src="components/underscore/underscore.js"></script>
+	<script src="components/backbone/backbone.js"></script>-->
+	
+</head>
+<body>
+	<!--<input id="app" class="user-name" type="text" placeholder="Enter a github user name"></input><select id='repos'><option>Choose a repo.</option></select><select id='files'><option>Choose a file.</option></select>-->
+	<div id='docs'>
+        
+	</div>
+	<!--<script src="app.js"></script>-->
+	<script>
+		function getParameterByName(name)
+			{
+			  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			  var regexS = "[\\?&]" + name + "=([^&#]*)";
+			  var regex = new RegExp(regexS);
+			  var results = regex.exec(window.location.search);
+			  if(results == null)
+			    return "";
+			  else
+			    return decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+		var src = getParameterByName('src');
+	  	console.log(src);
+	    var xmneme = document.createElement('x-mneme');
+	    xmneme.setAttribute('src', src);
+	    xmneme.setAttribute('template-src', "mneme-template");
+	    document.getElementById('docs').appendChild(xmneme);
+	</script>
+</body>
+</html>
