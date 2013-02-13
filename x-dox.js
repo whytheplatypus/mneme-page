@@ -1,5 +1,5 @@
 (function(){
-
+	/*
 	var cleanDox = function(code){
 		var raw = dox.parseComments(code);
 		var result = _.groupBy(raw, function(thing){
@@ -41,7 +41,7 @@
 		var docs = {raw: raw, jsDoc: result};
 		return docs;
 	};
-
+	*/
 	xtag.register('x-dox', {
 		mixins: ['request'],
 		onCreate: function(){
@@ -77,17 +77,16 @@
 		},
 		methods: {
 		    parse: function(code){
-		    	this.dox = cleanDox(code);
-		    	console.log(this.dox);
+		    	this.docs = mneme.parse(code);
+		    	console.log(this.docs);
 		    	this.update();
 		    },
 		    compile: function(src){
 		    	var source = document.getElementById(src).innerHTML;
-				this.template = Handlebars.compile(source);
-				console.log(this.template);
+					this.template = Handlebars.compile(source);
 		    },
 		    update: function(){
-		    	this.innerHTML = this.template(this.dox.jsDoc);
+		    	this.innerHTML = this.template(this.docs.info);
 		    	hljs.initHighlighting();
 		    }
 		}
